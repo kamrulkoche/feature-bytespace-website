@@ -1,0 +1,227 @@
+@startuml SP_Company_Frontend_Architecture
+!theme aws-orange
+title SP Company LTD - Frontend Architecture Diagram
+subtitle 11 Communities | Redux + RTK Query | Flutter Mobile | Next.js Web
+
+' Color definitions
+!define FRONTEND_COLOR #E3F2FD
+!define COMMUNITY_COLOR #FFF3E0
+!define APP_COLOR #F3E5F5
+!define SHARED_COLOR #E8F5E8
+!define STATE_COLOR #FFF8E1
+!define MOBILE_COLOR #FCE4EC
+
+package "Frontend Architecture" as Frontend {
+  
+  ' Multi-Platform Applications
+  package "Applications Layer" as Apps {
+    [Next.js Web App] as WebApp #APP_COLOR
+    [Flutter Mobile App] as MobileApp #MOBILE_COLOR  
+    [Admin Panel] as AdminPanel #APP_COLOR
+    [Storybook] as Storybook #APP_COLOR
+  }
+  
+  ' State Management
+  package "State Management" as StateManagement {
+    [Redux Store] as ReduxStore #STATE_COLOR
+    [RTK Query] as RTKQuery #STATE_COLOR
+    [Redux Persist] as ReduxPersist #STATE_COLOR
+    [Redux DevTools] as DevTools #STATE_COLOR
+  }
+  
+  ' Community-Based Architecture
+  package "Frontend Communities (11)" as Communities {
+    
+    package "User Management Community" as UserMgmt {
+      [LoginForm] #COMMUNITY_COLOR
+      [ProfileCard] #COMMUNITY_COLOR
+      [UserDashboard] #COMMUNITY_COLOR
+      [AuthSlice] as AuthSlice #STATE_COLOR
+    }
+    
+    package "Vehicle Management Community" as VehicleMgmt {
+      [VehicleCard] #COMMUNITY_COLOR
+      [VehicleDetails] #COMMUNITY_COLOR
+      [VehicleForm] #COMMUNITY_COLOR
+      [VehicleSlice] as VehicleSlice #STATE_COLOR
+    }
+    
+    package "Search & Discovery Community" as SearchDiscovery {
+      [SearchBar] #COMMUNITY_COLOR
+      [FilterPanel] #COMMUNITY_COLOR
+      [ResultsGrid] #COMMUNITY_COLOR
+      [SearchSlice] as SearchSlice #STATE_COLOR
+    }
+    
+    package "Auction Management Community" as AuctionMgmt {
+      [BiddingPanel] #COMMUNITY_COLOR
+      [AuctionCard] #COMMUNITY_COLOR
+      [LiveRoom] #COMMUNITY_COLOR
+      [AuctionSlice] as AuctionSlice #STATE_COLOR
+    }
+    
+    package "Payment & Financial Community" as PaymentFinancial {
+      [PaymentForm] #COMMUNITY_COLOR
+      [InvoiceView] #COMMUNITY_COLOR
+      [BillingDashboard] #COMMUNITY_COLOR
+      [PaymentSlice] as PaymentSlice #STATE_COLOR
+    }
+    
+    package "Shipping & Logistics Community" as ShippingLogistics {
+      [TrackingWidget] #COMMUNITY_COLOR
+      [ShippingForm] #COMMUNITY_COLOR
+      [LogisticsMap] #COMMUNITY_COLOR
+      [ShippingSlice] as ShippingSlice #STATE_COLOR
+    }
+    
+    package "Notification Community" as NotificationComm {
+      [NotificationBell] #COMMUNITY_COLOR
+      [MessageCenter] #COMMUNITY_COLOR
+      [ToastProvider] #COMMUNITY_COLOR
+      [NotificationSlice] as NotificationSlice #STATE_COLOR
+    }
+    
+    package "Content Management Community" as ContentMgmt {
+      [ContentEditor] #COMMUNITY_COLOR
+      [TestimonialCard] #COMMUNITY_COLOR
+      [MediaGallery] #COMMUNITY_COLOR
+      [ContentSlice] as ContentSlice #STATE_COLOR
+    }
+    
+    package "Analytics & Insights Community" as Analytics {
+      [AnalyticsDashboard] #COMMUNITY_COLOR
+      [ChartWidget] #COMMUNITY_COLOR
+      [ReportView] #COMMUNITY_COLOR
+      [AnalyticsSlice] as AnalyticsSlice #STATE_COLOR
+    }
+    
+    package "Communication Community" as Communication {
+      [ChatWidget] #COMMUNITY_COLOR
+      [SupportTicket] #COMMUNITY_COLOR
+      [MessageThread] #COMMUNITY_COLOR
+      [CommunicationSlice] as CommunicationSlice #STATE_COLOR
+    }
+    
+    package "Infrastructure Community" as Infrastructure {
+      [ErrorBoundary] #COMMUNITY_COLOR
+      [HealthStatus] #COMMUNITY_COLOR
+      [ConfigPanel] #COMMUNITY_COLOR
+      [InfrastructureSlice] as InfrastructureSlice #STATE_COLOR
+    }
+  }
+  
+  ' Shared Resources
+  package "Shared Resources" as Shared {
+    [UI Components] #SHARED_COLOR
+    [Custom Hooks] #SHARED_COLOR
+    [API Services] #SHARED_COLOR
+    [Utility Functions] #SHARED_COLOR
+    [Type Definitions] #SHARED_COLOR
+    [Global Store Config] #STATE_COLOR
+  }
+  
+  ' External Integrations
+  package "External Services" as External {
+    [Backend APIs] as BackendAPI #FRONTEND_COLOR
+    [WebSocket Services] as WebSocket #FRONTEND_COLOR
+    [Authentication Service] as AuthService #FRONTEND_COLOR
+    [File Upload Service] as FileUpload #FRONTEND_COLOR
+  }
+}
+
+' Backend Integration
+package "Backend Services" as Backend {
+  [API Gateway] as APIGateway #FRONTEND_COLOR
+  [GraphQL Endpoint] as GraphQL #FRONTEND_COLOR
+  [WebSocket Gateway] as WSGateway #FRONTEND_COLOR
+  [Authentication Server] as AuthServer #FRONTEND_COLOR
+  [File Storage] as FileStorage #FRONTEND_COLOR
+}
+
+' Deployment Platforms
+package "Deployment Platforms" as Deployment {
+  [Vercel] as VercelPlatform #APP_COLOR
+  [iOS App Store] as iOSStore #MOBILE_COLOR
+  [Google Play Store] as PlayStore #MOBILE_COLOR
+  [AWS EC2] as EC2 #APP_COLOR
+  [Chromatic] as ChromaticPlatform #APP_COLOR
+}
+
+' Application Relationships
+WebApp --> ReduxStore : "uses"
+MobileApp --> ReduxStore : "uses"
+AdminPanel --> ReduxStore : "uses"
+
+' Redux Relationships
+ReduxStore --> RTKQuery : "integrates"
+ReduxStore --> ReduxPersist : "persists state"
+ReduxStore --> DevTools : "debugging"
+
+' Community to Redux Store
+UserMgmt --> UserMgmt.AuthSlice : "manages"
+VehicleMgmt --> VehicleMgmt.VehicleSlice : "manages"
+SearchDiscovery --> SearchDiscovery.SearchSlice : "manages"
+AuctionMgmt --> AuctionMgmt.AuctionSlice : "manages"
+PaymentFinancial --> PaymentFinancial.PaymentSlice : "manages"
+ShippingLogistics --> ShippingLogistics.ShippingSlice : "manages"
+NotificationComm --> NotificationComm.NotificationSlice : "manages"
+ContentMgmt --> ContentMgmt.ContentSlice : "manages"
+Analytics --> Analytics.AnalyticsSlice : "manages"
+Communication --> Communication.CommunicationSlice : "manages"
+Infrastructure --> Infrastructure.InfrastructureSlice : "manages"
+
+' All Redux Slices connect to main store
+UserMgmt.AuthSlice --> ReduxStore : "connects to"
+VehicleMgmt.VehicleSlice --> ReduxStore : "connects to"
+SearchDiscovery.SearchSlice --> ReduxStore : "connects to"
+AuctionMgmt.AuctionSlice --> ReduxStore : "connects to"
+PaymentFinancial.PaymentSlice --> ReduxStore : "connects to"
+ShippingLogistics.ShippingSlice --> ReduxStore : "connects to"
+NotificationComm.NotificationSlice --> ReduxStore : "connects to"
+ContentMgmt.ContentSlice --> ReduxStore : "connects to"
+Analytics.AnalyticsSlice --> ReduxStore : "connects to"
+Communication.CommunicationSlice --> ReduxStore : "connects to"
+Infrastructure.InfrastructureSlice --> ReduxStore : "connects to"
+
+' Shared Resources Usage
+Apps --> Shared : "leverages"
+Communities --> Shared : "utilizes"
+
+' Backend Integration
+RTKQuery --> BackendAPI : "API calls"
+RTKQuery --> GraphQL : "dynamic queries"
+WebApp --> WebSocket : "real-time features"
+MobileApp --> WebSocket : "real-time features"
+AdminPanel --> WebSocket : "real-time features"
+WebApp --> AuthService : "authentication"
+MobileApp --> AuthService : "authentication"
+AdminPanel --> AuthService : "authentication"
+WebApp --> FileUpload : "file operations"
+MobileApp --> FileUpload : "file operations"
+AdminPanel --> FileUpload : "file operations"
+
+' Backend Services
+BackendAPI --> APIGateway : "routes through"
+GraphQL --> APIGateway : "routes through"
+WebSocket --> WSGateway : "connects via"
+AuthService --> AuthServer : "authenticates with"
+FileUpload --> FileStorage : "stores in"
+
+' Deployment
+WebApp --> VercelPlatform : "deploys to"
+MobileApp --> iOSStore : "publishes to"
+MobileApp --> PlayStore : "publishes to"
+AdminPanel --> EC2 : "deploys to"
+Storybook --> ChromaticPlatform : "hosts on"
+
+' Technology Labels
+note top of WebApp : Next.js 14 + TypeScript\nTailwind CSS + HeadlessUI
+note top of MobileApp : Flutter + Dart\nMaterial Design + Cupertino
+note top of ReduxStore : Redux Toolkit\nRTK Query + Redux Persist
+note top of Communities : 11 Communities\n200+ Components\n80+ Pages
+
+note bottom of Backend : Backend Microservices\n44+ Services\n11 Communities\nGraphQL + REST APIs
+
+note right of Deployment : Multi-Platform Deployment\n• Web: Vercel CDN\n• Mobile: App Stores\n• Admin: AWS EC2\n• Docs: Chromatic
+
+@enduml

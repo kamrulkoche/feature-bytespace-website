@@ -1,0 +1,26 @@
+:root {
+  --color: #fff;
+  --hover: #e24932;
+  --black: #333;
+  --white: white;
+  --bgColor: #f6f8fa;
+  --lightBlack: #777;
+  --orange: #fd6179;
+  --blue: #1f7ae2;
+  --purple: #4e5bde;
+  --google-blue: #4285f4;
+  --button-active-blue: #1669f2;
+  --primary: #012d41;
+  --secondary: #f26f21;
+  --gray10: #f2f5ff;
+  --gray9: #0e263e;
+  --gray8: #3f5467;
+  --gray7: #6f818f;
+  --gray6: #a0afb7;
+  --gray5: #c0cbd1;
+  --gray4: #d7dfe2;
+  --gray3: #e7ebee;
+  --gray2: #eff2f3;
+  --gray1: #f7f8f9;
+  --bodyColor: #3f5467;
+}
