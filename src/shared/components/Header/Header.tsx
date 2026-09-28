@@ -1,0 +1,113 @@
+'use client';
+
+import Logo from '@/shared/components/Logo/Logo';
+import { navLinks } from '@/features/home/data';
+import { Menu, ShoppingBag, X } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+
+type HeaderProps = {
+  isLoggedIn?: boolean;
+  variant?: 'hero' | 'solid';
+};
+
+const Header = ({ isLoggedIn = false, variant = 'hero' }: HeaderProps) => {
+  const [open, setOpen] = useState(false);
+  const isHero = variant === 'hero';
+
+  return (
+    <header
+      className={`${
+        isHero
+          ? 'absolute inset-x-0 top-0 z-30 bg-transparent'
+          : 'sticky top-0 z-30 bg-brand'
+      }`}
+      data-testid="site-header"
+    >
+      <div className="container-content flex h-[88px] items-center justify-between lg:h-[120px]">
+        <Logo theme="light" />
+
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-base font-medium text-surface-muted hover:text-white"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-5 md:flex">
+          <Link
+            href={isLoggedIn ? '/dashboard' : '/login'}
+            className="text-base text-surface-muted hover:text-white"
+          >
+            {isLoggedIn ? 'Dashboard' : 'Sign In'}
+          </Link>
+          {!isLoggedIn && (
+            <Link
+              href="/register"
+              className="text-base text-surface-muted hover:text-white"
+            >
+              Join Us
+            </Link>
+          )}
+          <button
+            type="button"
+            className="rounded-full p-2 text-white hover:bg-white/10"
+            aria-label="Shopping bag"
+          >
+            <ShoppingBag size={20} />
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="rounded-full p-2 text-white md:hidden"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {open && (
+        <div className="border-t border-white/10 bg-brand px-4 py-4 md:hidden">
+          <nav className="flex flex-col gap-3" aria-label="Mobile">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-lg px-3 py-2 text-white hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href={isLoggedIn ? '/dashboard' : '/login'}
+              className="rounded-lg px-3 py-2 text-white hover:bg-white/10"
+              onClick={() => setOpen(false)}
+            >
+              {isLoggedIn ? 'Dashboard' : 'Sign In'}
+            </Link>
+            {!isLoggedIn && (
+              <Link
+                href="/register"
+                className="rounded-lg px-3 py-2 text-white hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
+                Join Us
+              </Link>
+            )}
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;
