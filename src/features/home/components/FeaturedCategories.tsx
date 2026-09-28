@@ -1,6 +1,6 @@
 import Button from '@/shared/components/Button/Button';
-import CategoryCard from '@/features/home/components/CategoryCard';
-import { featuredCategories } from '@/features/home/data';
+import CategoryCard from '@/shared/components/CategoryCard/CategoryCard';
+import { featuredCategories } from '@/data/categories/categories.data';
 
 const FeaturedCategories = () => {
   return (

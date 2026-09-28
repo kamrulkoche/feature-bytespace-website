@@ -1,13 +1,13 @@
 'use client';
 
-import CourseCard from '@/features/home/components/CourseCard';
+import CourseCard from '@/shared/components/CourseCard/CourseCard';
 import SearchCategoryTabs from '@/features/search/components/SearchCategoryTabs';
 import SearchFilters from '@/features/search/components/SearchFilters';
 import SearchPagination from '@/features/search/components/SearchPagination';
+import { courses } from '@/data/courses/courses.data';
 import {
   SEARCH_PAGE_SIZE,
   SEARCH_TOTAL_PAGES,
-  courses,
 } from '@/features/search/data';
 import { useMemo, useState } from 'react';
 

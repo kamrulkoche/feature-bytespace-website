@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { testimonials } from '@/features/home/data';
+import { testimonials } from '@/data/home/home.data';
 
 const Testimonials = () => {
   return (

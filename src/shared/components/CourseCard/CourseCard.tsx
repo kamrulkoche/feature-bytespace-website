@@ -1,7 +1,8 @@
+import type { Course } from '@/domain/course';
+import { studentAvatars } from '@/shared/constants/assets';
+import { BarChart3, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Course, studentAvatars } from '@/features/home/data';
-import { BarChart3, Star } from 'lucide-react';
 
 type CourseCardProps = {
   course: Course;

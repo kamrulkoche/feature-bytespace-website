@@ -1,3 +1,4 @@
+import type { Category } from '@/domain/category';
 import {
   Building2,
   Camera,
@@ -7,7 +8,6 @@ import {
   PenTool,
   type LucideIcon,
 } from 'lucide-react';
-import { Category } from '@/features/home/data';
 
 const iconMap: Record<string, LucideIcon> = {
   'pen-tool': PenTool,

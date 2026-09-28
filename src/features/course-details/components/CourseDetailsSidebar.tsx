@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/shared/components/Button/Button';
-import { CourseDetail } from '@/features/course-details/data';
+import { CourseDetail } from '@/domain/course';
 import {
   Award,
   BarChart3,

@@ -1,7 +1,8 @@
 'use client';
 
-import CourseCard from '@/features/home/components/CourseCard';
-import { courseTags, courses } from '@/features/home/data';
+import CourseCard from '@/shared/components/CourseCard/CourseCard';
+import { courseTags } from '@/data/categories/categories.data';
+import { courses } from '@/data/courses/courses.data';
 import { useState } from 'react';
 
 const DiscoverCourses = () => {

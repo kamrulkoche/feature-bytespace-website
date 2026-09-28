@@ -7,7 +7,7 @@ import CourseDetailsSidebar, {
   CourseMetaBadges,
   CourseShareButton,
 } from '@/features/course-details/components/CourseDetailsSidebar';
-import { CourseDetail } from '@/features/course-details/data';
+import { CourseDetail } from '@/domain/course';
 import { Play } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';

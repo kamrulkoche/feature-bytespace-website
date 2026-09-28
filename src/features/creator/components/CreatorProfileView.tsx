@@ -1,8 +1,8 @@
 'use client';
 
-import CourseCard from '@/features/home/components/CourseCard';
+import CourseCard from '@/shared/components/CourseCard/CourseCard';
 import Button from '@/shared/components/Button/Button';
-import { CreatorProfile } from '@/features/creator/data';
+import type { CreatorProfile } from '@/domain/creator';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';

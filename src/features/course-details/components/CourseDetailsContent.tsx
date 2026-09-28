@@ -1,6 +1,6 @@
 'use client';
 
-import { CourseDetail } from '@/features/course-details/data';
+import { CourseDetail } from '@/domain/course';
 import { Check, Star, Video } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';

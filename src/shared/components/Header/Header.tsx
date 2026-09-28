@@ -1,7 +1,7 @@
 'use client';
 
 import Logo from '@/shared/components/Logo/Logo';
-import { navLinks } from '@/features/home/data';
+import { navLinks } from '@/shared/constants/navigation';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';

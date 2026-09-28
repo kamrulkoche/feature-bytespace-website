@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Check } from 'lucide-react';
-import { growthFeatures, studentAvatars } from '@/features/home/data';
+import { growthFeatures } from '@/data/home/home.data';
+import { studentAvatars } from '@/shared/constants/assets';
 
 const GrowthSection = () => {
   return (

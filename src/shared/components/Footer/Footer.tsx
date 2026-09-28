@@ -1,6 +1,6 @@
 import Logo from '@/shared/components/Logo/Logo';
 import Button from '@/shared/components/Button/Button';
-import { footerBrowse, footerPlatform } from '@/features/home/data';
+import { footerBrowse, footerPlatform } from '@/shared/constants/navigation';
 import Link from 'next/link';
 
 const Footer = () => {
