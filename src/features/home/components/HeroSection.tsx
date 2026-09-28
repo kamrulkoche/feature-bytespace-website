@@ -67,13 +67,13 @@ const HeroSection = () => {
 
         <form
           onSubmit={handleSearch}
-          className="mx-auto mt-8 flex w-full max-w-3xl flex-col gap-3 rounded-full bg-white p-2 shadow-float sm:flex-row sm:items-center"
+          className="mx-auto mt-8 flex w-full max-w-3xl flex-col gap-2 rounded-[28px] bg-white p-3 shadow-float sm:flex-row sm:items-center sm:gap-3 sm:rounded-full sm:p-2"
         >
           <label className="sr-only" htmlFor="hero-search">
             Search courses
           </label>
-          <div className="flex flex-1 items-center gap-3 px-4 text-ink-faint">
-            <Search size={18} />
+          <div className="flex min-h-11 flex-1 items-center gap-3 px-3 text-ink-faint sm:px-4">
+            <Search size={18} className="shrink-0" aria-hidden />
             <input
               id="hero-search"
               name="q"
@@ -81,10 +81,13 @@ const HeroSection = () => {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Course, topic, creator"
-              className="h-11 w-full bg-transparent text-base text-ink outline-none placeholder:text-ink-faint"
+              className="h-11 w-full min-w-0 bg-transparent text-base text-ink outline-none placeholder:text-ink-faint"
             />
           </div>
-          <Button type="submit" className="w-full sm:w-auto">
+          <Button
+            type="submit"
+            className="h-12 w-full shrink-0 sm:h-11 sm:w-auto sm:min-w-[120px]"
+          >
             Search
           </Button>
         </form>
