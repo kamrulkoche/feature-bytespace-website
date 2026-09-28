@@ -2,16 +2,33 @@
 
 import Button from '@/shared/components/Button/Button';
 import FormField from '@/shared/components/FormField/FormField';
+import { setAuthUser } from '@/shared/lib/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
 const RegisterForm = () => {
+  const router = useRouter();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimmedName = fullName.trim();
+    const trimmedEmail = email.trim();
+    if (trimmedName.length < 2) {
+      setError('Enter your full name.');
+      return;
+    }
+    if (!trimmedEmail.includes('@') || password.trim().length < 4) {
+      setError('Enter a valid email and a password with at least 4 characters.');
+      return;
+    }
+    setError('');
+    setAuthUser({ email: trimmedEmail, name: trimmedName });
+    router.push('/dashboard');
   };
 
   return (
@@ -33,7 +50,10 @@ const RegisterForm = () => {
             autoComplete="name"
             placeholder="Jamie Davis"
             value={fullName}
-            onChange={(event) => setFullName(event.target.value)}
+            onChange={(event) => {
+              setFullName(event.target.value);
+              if (error) setError('');
+            }}
             required
           />
           <FormField
@@ -44,7 +64,10 @@ const RegisterForm = () => {
             autoComplete="email"
             placeholder="designer@example.com"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              setEmail(event.target.value);
+              if (error) setError('');
+            }}
             required
           />
           <FormField
@@ -55,9 +78,18 @@ const RegisterForm = () => {
             autoComplete="new-password"
             placeholder="********"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              if (error) setError('');
+            }}
             required
           />
+
+          {error && (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
 
           <div className="flex justify-end pt-1">
             <Button type="submit" size="md">

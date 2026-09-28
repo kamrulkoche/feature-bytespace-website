@@ -1,8 +1,21 @@
+'use client';
+
 import Button from '@/shared/components/Button/Button';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { FormEvent, useState } from 'react';
 
 const HeroSection = () => {
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const q = query.trim();
+    router.push(q ? `/search?q=${encodeURIComponent(q)}` : '/search');
+  };
+
   return (
     <section className="relative overflow-hidden bg-brand pt-[88px] text-white lg:pt-[120px]">
       <div
@@ -53,8 +66,7 @@ const HeroSection = () => {
         </p>
 
         <form
-          action="#"
-          method="get"
+          onSubmit={handleSearch}
           className="mx-auto mt-8 flex w-full max-w-3xl flex-col gap-3 rounded-full bg-white p-2 shadow-float sm:flex-row sm:items-center"
         >
           <label className="sr-only" htmlFor="hero-search">
@@ -66,6 +78,8 @@ const HeroSection = () => {
               id="hero-search"
               name="q"
               type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
               placeholder="Course, topic, creator"
               className="h-11 w-full bg-transparent text-base text-ink outline-none placeholder:text-ink-faint"
             />

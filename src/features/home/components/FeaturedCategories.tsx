@@ -15,7 +15,9 @@ const FeaturedCategories = () => {
               Innovative Paths to Knowledge
             </h2>
           </div>
-          <Button className="self-start sm:self-auto">View More</Button>
+          <Button href="/search" className="self-start sm:self-auto">
+            View More
+          </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-6">

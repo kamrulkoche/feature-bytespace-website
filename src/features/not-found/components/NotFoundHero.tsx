@@ -1,6 +1,5 @@
 import Button from '@/shared/components/Button/Button';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const NotFoundHero = () => {
   return (
@@ -58,11 +57,9 @@ const NotFoundHero = () => {
           <p className="max-w-md text-base text-[#E5E6E8] sm:text-lg">
             Try to use a correct url or go back to homepage to start again
           </p>
-          <Link href="/">
-            <Button size="md" className="h-[46px] px-6 text-lg font-medium">
-              Back to Home
-            </Button>
-          </Link>
+          <Button href="/" size="md" className="h-[46px] px-6 text-lg font-medium">
+            Back to Home
+          </Button>
         </div>
       </div>
     </section>

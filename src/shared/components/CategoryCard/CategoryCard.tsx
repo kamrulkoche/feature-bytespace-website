@@ -8,6 +8,7 @@ import {
   PenTool,
   type LucideIcon,
 } from 'lucide-react';
+import Link from 'next/link';
 
 const iconMap: Record<string, LucideIcon> = {
   'pen-tool': PenTool,
@@ -31,10 +32,12 @@ const CategoryCard = ({
   const isPath = variant === 'path';
 
   return (
-    <article
-      className={`flex flex-col items-center justify-center rounded-[28px] bg-surface-muted text-center transition hover:-translate-y-1 hover:shadow-card ${
+    <Link
+      href={`/search?category=${encodeURIComponent(category.name)}`}
+      className={`flex flex-col items-center justify-center rounded-[28px] bg-surface-muted text-center transition hover:-translate-y-1 hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
         isPath ? 'aspect-square gap-4 p-6' : 'min-h-[167px] gap-3 p-5'
       }`}
+      aria-label={`Browse ${category.name} courses`}
     >
       <span
         className={`inline-flex items-center justify-center rounded-2xl ${
@@ -52,7 +55,7 @@ const CategoryCard = ({
       >
         {category.name}
       </p>
-    </article>
+    </Link>
   );
 };
 
