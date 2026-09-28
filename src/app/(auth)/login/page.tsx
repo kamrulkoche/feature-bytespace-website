@@ -1,6 +1,7 @@
 import AuthVisual from '@/features/auth/components/AuthVisual';
 import LoginForm from '@/features/auth/components/LoginForm';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Sign In | ByteSpace',
@@ -21,7 +22,9 @@ const LoginPage = () => {
         />
       </section>
       <section className="order-1 mx-auto w-full max-w-xl lg:order-2 lg:mx-0 lg:max-w-[579px]">
-        <LoginForm />
+        <Suspense fallback={<div className="rounded-[24px] bg-white p-10">Loading…</div>}>
+          <LoginForm />
+        </Suspense>
       </section>
     </main>
   );

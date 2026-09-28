@@ -1,5 +1,6 @@
-import CourseCard from '@/features/home/components/CourseCard';
-import { courses, studentAvatars } from '@/features/home/data';
+import CourseCard from '@/shared/components/CourseCard/CourseCard';
+import { courses } from '@/data/courses/courses.data';
+import { studentAvatars } from '@/shared/constants/assets';
 import Image from 'next/image';
 
 const floatingCourses = [

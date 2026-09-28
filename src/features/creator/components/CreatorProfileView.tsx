@@ -1,10 +1,12 @@
 'use client';
 
-import CourseCard from '@/features/home/components/CourseCard';
+import CourseCard from '@/shared/components/CourseCard/CourseCard';
 import Button from '@/shared/components/Button/Button';
-import { CreatorProfile } from '@/features/creator/data';
+import type { CreatorProfile } from '@/domain/creator';
+import { getAuthUser } from '@/shared/lib/auth';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 type CreatorProfileViewProps = {
@@ -14,8 +16,29 @@ type CreatorProfileViewProps = {
 const filterOptions = ['Filter', 'Level', 'Category', 'Most relevant'] as const;
 
 const CreatorProfileView = ({ creator }: CreatorProfileViewProps) => {
+  const router = useRouter();
   const [activeFilter, setActiveFilter] = useState<string>('Most relevant');
-  const courseList = useMemo(() => creator.courses, [creator.courses]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const courseList = useMemo(() => {
+    const list = [...creator.courses];
+    if (activeFilter === 'Level') {
+      return list.sort((a, b) => a.level.localeCompare(b.level));
+    }
+    if (activeFilter === 'Category' || activeFilter === 'Most relevant') {
+      return list;
+    }
+    return list.sort((a, b) => a.title.localeCompare(b.title));
+  }, [creator.courses, activeFilter]);
+
+  const handleFollow = () => {
+    if (!getAuthUser()) {
+      router.push(
+        `/login?next=${encodeURIComponent(`/creators/${creator.id}`)}`
+      );
+      return;
+    }
+    setIsFollowing((value) => !value);
+  };
 
   return (
     <main data-testid="creator-profile-page" className="bg-white">
@@ -36,7 +59,9 @@ const CreatorProfileView = ({ creator }: CreatorProfileViewProps) => {
                 priority
               />
               <div className="lg:hidden">
-                <h1 className="font-display text-2xl font-semibold">{creator.name}</h1>
+                <h1 className="font-display text-2xl font-semibold">
+                  {creator.name}
+                </h1>
                 <p className="mt-1 text-sm text-[#E5E6E8]">{creator.role}</p>
               </div>
             </div>
@@ -67,13 +92,24 @@ const CreatorProfileView = ({ creator }: CreatorProfileViewProps) => {
               </div>
               <div className="rounded-2xl bg-white px-5 py-3">
                 <p className="text-lg font-medium">
-                  <span className="text-brand">{creator.followersCount}</span>{' '}
+                  <span className="text-brand">
+                    {isFollowing
+                      ? String(Number(creator.followersCount) + 1)
+                      : creator.followersCount}
+                  </span>{' '}
                   <span className="text-ink">Followers</span>
                 </p>
               </div>
             </div>
-            <Button className="h-[46px] min-w-[120px] bg-white text-ink-strong hover:bg-surface-muted">
-              Follow
+            <Button
+              className={`h-[46px] min-w-[120px] ${
+                isFollowing
+                  ? 'bg-accent text-ink hover:bg-accent-dark'
+                  : 'bg-white text-ink-strong hover:bg-surface-muted'
+              }`}
+              onClick={handleFollow}
+            >
+              {isFollowing ? 'Following' : 'Follow'}
             </Button>
           </div>
         </div>

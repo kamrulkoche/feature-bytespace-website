@@ -1,5 +1,5 @@
 import CreatorProfileView from '@/features/creator/components/CreatorProfileView';
-import { creators, getCreatorById } from '@/features/creator/data';
+import { creators, getCreatorById } from '@/data/creators/creators.data';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 

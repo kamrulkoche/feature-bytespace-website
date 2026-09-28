@@ -1,11 +1,31 @@
+'use client';
+
 import Logo from '@/shared/components/Logo/Logo';
 import Button from '@/shared/components/Button/Button';
-import { footerBrowse, footerPlatform } from '@/features/home/data';
+import {
+  footerBrowseLinks,
+  footerLegalLinks,
+  footerPlatformLinks,
+} from '@/shared/constants/footer';
 import Link from 'next/link';
+import { FormEvent, useState } from 'react';
 
 const Footer = () => {
-  const browseLeft = footerBrowse.slice(0, 5);
-  const browseRight = footerBrowse.slice(5);
+  const browseLeft = footerBrowseLinks.slice(0, 5);
+  const browseRight = footerBrowseLinks.slice(5);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = email.trim();
+    if (!value || !value.includes('@')) {
+      setStatus('error');
+      return;
+    }
+    setStatus('success');
+    setEmail('');
+  };
 
   return (
     <footer className="bg-white" data-testid="site-footer">
@@ -19,8 +39,8 @@ const Footer = () => {
             </p>
             <form
               className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center"
-              action="#"
-              method="post"
+              onSubmit={handleSubscribe}
+              noValidate
             >
               <label className="sr-only" htmlFor="newsletter-email">
                 Email address
@@ -28,13 +48,30 @@ const Footer = () => {
               <input
                 id="newsletter-email"
                 type="email"
+                name="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  if (status !== 'idle') setStatus('idle');
+                }}
                 placeholder="Enter your email"
+                required
                 className="h-12 w-full flex-1 rounded-full border border-surface-line px-5 text-sm text-ink outline-none ring-brand focus:ring-2"
               />
               <Button type="submit" className="shrink-0">
-                Search
+                Subscribe
               </Button>
             </form>
+            {status === 'success' && (
+              <p className="mt-2 text-xs font-medium text-brand" role="status">
+                Thanks! You&apos;re subscribed for product updates.
+              </p>
+            )}
+            {status === 'error' && (
+              <p className="mt-2 text-xs font-medium text-red-600" role="alert">
+                Enter a valid email address to subscribe.
+              </p>
+            )}
             <p className="mt-3 text-xs leading-5 text-ink">
               By subscribing, you agree to our Privacy Policy and consent to
               receive updates from our company.
@@ -46,12 +83,12 @@ const Footer = () => {
               <p className="mb-4 text-base font-medium text-ink-faint">Browse</p>
               <ul className="space-y-3">
                 {browseLeft.map((item) => (
-                  <li key={item}>
+                  <li key={item.label}>
                     <Link
-                      href="#"
+                      href={item.href}
                       className="text-sm text-ink hover:text-brand"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 ))}
@@ -63,12 +100,12 @@ const Footer = () => {
               </p>
               <ul className="space-y-3">
                 {browseRight.map((item) => (
-                  <li key={item}>
+                  <li key={item.label}>
                     <Link
-                      href="#"
+                      href={item.href}
                       className="text-sm text-ink hover:text-brand"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 ))}
@@ -79,13 +116,13 @@ const Footer = () => {
                 Platform
               </p>
               <ul className="space-y-3">
-                {footerPlatform.map((item) => (
-                  <li key={item}>
+                {footerPlatformLinks.map((item) => (
+                  <li key={item.label}>
                     <Link
-                      href="#"
+                      href={item.href}
                       className="text-sm text-ink hover:text-brand"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 ))}
@@ -99,15 +136,15 @@ const Footer = () => {
         <div className="container-content flex flex-col gap-4 py-6 text-xs text-ink sm:flex-row sm:items-center sm:justify-between">
           <p>@ 2023 ByteSpace. All rights reserved.</p>
           <div className="flex flex-wrap gap-5">
-            <Link href="#" className="hover:text-brand">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="hover:text-brand">
-              Terms of Service
-            </Link>
-            <Link href="#" className="hover:text-brand">
-              Cookies Settings
-            </Link>
+            {footerLegalLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="hover:text-brand"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

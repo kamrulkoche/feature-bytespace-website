@@ -1,5 +1,5 @@
-import CategoryCard from '@/features/home/components/CategoryCard';
-import { learningPaths } from '@/features/home/data';
+import CategoryCard from '@/shared/components/CategoryCard/CategoryCard';
+import { learningPaths } from '@/data/categories/categories.data';
 
 const LearningPaths = () => {
   return (

@@ -2,7 +2,9 @@
 
 import Button from '@/shared/components/Button/Button';
 import FormField from '@/shared/components/FormField/FormField';
+import { setAuthUser } from '@/shared/lib/auth';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
 const GoogleIcon = () => (
@@ -33,11 +35,34 @@ const AppleIcon = () => (
 );
 
 const LoginForm = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const redirectTo = () => {
+    const next = searchParams.get('next');
+    return next && next.startsWith('/') ? next : '/dashboard';
+  };
+
+  const completeLogin = (loginEmail: string, name?: string) => {
+    setAuthUser({
+      email: loginEmail,
+      name: name ?? loginEmail.split('@')[0] ?? 'Learner',
+    });
+    router.push(redirectTo());
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail.includes('@') || password.trim().length < 4) {
+      setError('Enter a valid email and a password with at least 4 characters.');
+      return;
+    }
+    setError('');
+    completeLogin(trimmedEmail);
   };
 
   return (
@@ -60,7 +85,10 @@ const LoginForm = () => {
               autoComplete="email"
               placeholder="designer@example.com"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                if (error) setError('');
+              }}
               required
             />
             <FormField
@@ -71,9 +99,18 @@ const LoginForm = () => {
               autoComplete="current-password"
               placeholder="********"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value);
+                if (error) setError('');
+              }}
               required
             />
+
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
 
             <div className="flex justify-end">
               <Button type="submit" size="md" className="h-[46px] min-w-[104px] px-6">
@@ -95,6 +132,7 @@ const LoginForm = () => {
               type="button"
               aria-label="Continue with Google"
               className="inline-flex h-[72px] w-[72px] items-center justify-center rounded-3xl border border-[#D1D1D1] bg-white transition hover:bg-surface-soft"
+              onClick={() => completeLogin('google.user@bytespace.app', 'Google User')}
             >
               <GoogleIcon />
             </button>
@@ -102,6 +140,7 @@ const LoginForm = () => {
               type="button"
               aria-label="Continue with Apple"
               className="inline-flex h-[72px] w-[72px] items-center justify-center rounded-3xl border border-[#D1D1D1] bg-white text-ink transition hover:bg-surface-soft"
+              onClick={() => completeLogin('apple.user@bytespace.app', 'Apple User')}
             >
               <AppleIcon />
             </button>

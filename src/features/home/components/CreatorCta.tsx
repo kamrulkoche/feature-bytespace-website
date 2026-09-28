@@ -48,7 +48,9 @@ const CreatorCta = () => {
           Course Editor, and showcase your expertise by publishing your finest
           course on the ByteSpace Course Library.
         </p>
-        <Button className="mt-8">Join as Creator</Button>
+        <Button href="/register" className="mt-8">
+          Join as Creator
+        </Button>
       </div>
     </section>
   );

@@ -1,11 +1,25 @@
 'use client';
 
-import CourseCard from '@/features/home/components/CourseCard';
-import { courseTags, courses } from '@/features/home/data';
-import { useState } from 'react';
+import CourseCard from '@/shared/components/CourseCard/CourseCard';
+import { courseTags } from '@/data/categories/categories.data';
+import { courses } from '@/data/courses/courses.data';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
 
 const DiscoverCourses = () => {
   const [activeTag, setActiveTag] = useState('Featured');
+
+  const visibleCourses = useMemo(() => {
+    if (activeTag === 'Featured') return courses;
+    const needle = activeTag.toLowerCase();
+    const filtered = courses.filter(
+      (course) =>
+        course.title.toLowerCase().includes(needle) ||
+        course.level.toLowerCase().includes(needle) ||
+        course.author.toLowerCase().includes(needle)
+    );
+    return filtered.length > 0 ? filtered : courses;
+  }, [activeTag]);
 
   return (
     <section id="courses" className="bg-white py-14 sm:py-20">
@@ -33,25 +47,23 @@ const DiscoverCourses = () => {
                 className={`rounded-full px-4 py-2.5 text-sm font-medium transition ${
                   isActive
                     ? 'bg-accent text-ink'
-                    : tag.label === '+ More'
-                      ? 'text-brand'
-                      : 'bg-surface-muted text-ink-muted hover:bg-surface-line'
+                    : 'bg-surface-muted text-ink-muted hover:bg-surface-line'
                 }`}
               >
                 {tag.label}
               </button>
             );
           })}
-          <button
-            type="button"
-            className="rounded-full px-4 py-2.5 text-sm font-medium text-brand"
+          <Link
+            href="/search"
+            className="rounded-full px-4 py-2.5 text-sm font-medium text-brand transition hover:bg-surface-muted"
           >
             + More
-          </button>
+          </Link>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          {courses.map((course) => (
+          {visibleCourses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
         </div>

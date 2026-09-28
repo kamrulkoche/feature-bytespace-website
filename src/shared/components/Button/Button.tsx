@@ -1,10 +1,11 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+'use client';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: ReactNode;
-  variant?: 'accent' | 'ghost' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
-};
+import Link from 'next/link';
+import {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ReactNode,
+} from 'react';
 
 const variants = {
   accent:
@@ -20,20 +21,49 @@ const sizes = {
   lg: 'h-12 px-8 text-lg',
 };
 
+type CommonProps = {
+  children: ReactNode;
+  variant?: keyof typeof variants;
+  size?: keyof typeof sizes;
+  className?: string;
+};
+
+type ButtonAsButton = CommonProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'children'> & {
+    href?: undefined;
+  };
+
+type ButtonAsLink = CommonProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'children' | 'href'> & {
+    href: string;
+  };
+
+type ButtonProps = ButtonAsButton | ButtonAsLink;
+
+const baseClass =
+  'inline-flex items-center justify-center rounded-full font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60';
+
 const Button = ({
   children,
   variant = 'accent',
   size = 'md',
   className = '',
-  type = 'button',
   ...props
 }: ButtonProps) => {
+  const classes = `${baseClass} ${variants[variant]} ${sizes[size]} ${className}`;
+
+  if ('href' in props && props.href) {
+    const { href, ...linkProps } = props;
+    return (
+      <Link href={href} className={classes} {...linkProps}>
+        {children}
+      </Link>
+    );
+  }
+
+  const { type = 'button', ...buttonProps } = props as ButtonAsButton;
   return (
-    <button
-      type={type}
-      className={`inline-flex items-center justify-center rounded-full font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
-    >
+    <button type={type} className={classes} {...buttonProps}>
       {children}
     </button>
   );

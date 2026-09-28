@@ -1,9 +1,3 @@
-export {
-  type Course,
-  courses,
-  studentAvatars,
-} from '@/features/home/data';
-
 export const searchCategoryTags = [
   'Featured',
   'Music',

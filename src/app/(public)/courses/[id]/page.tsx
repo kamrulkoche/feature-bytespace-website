@@ -2,7 +2,7 @@ import CourseDetailsView from '@/features/course-details/components/CourseDetail
 import {
   courseDetails,
   getCourseById,
-} from '@/features/course-details/data';
+} from '@/data/courses/course-details.data';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 

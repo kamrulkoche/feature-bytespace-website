@@ -1,16 +1,5 @@
-import { courses, Course } from '@/features/home/data';
-
-export type CreatorProfile = {
-  id: string;
-  name: string;
-  role: string;
-  avatar: string;
-  welcome: string;
-  portfolioBlurb: string;
-  productsCount: string;
-  followersCount: string;
-  courses: Course[];
-};
+import type { CreatorProfile } from '@/domain/creator';
+import { courses } from '@/data/courses/courses.data';
 
 export const creators: CreatorProfile[] = [
   {

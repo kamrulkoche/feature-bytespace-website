@@ -7,7 +7,7 @@ import CourseDetailsSidebar, {
   CourseMetaBadges,
   CourseShareButton,
 } from '@/features/course-details/components/CourseDetailsSidebar';
-import { CourseDetail } from '@/features/course-details/data';
+import { CourseDetail } from '@/domain/course';
 import { Play } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -18,6 +18,7 @@ type CourseDetailsViewProps = {
 
 const CourseDetailsView = ({ course }: CourseDetailsViewProps) => {
   const [activeTab, setActiveTab] = useState<CourseTab>('About');
+  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <main data-testid="course-details-page" className="bg-white">
@@ -48,7 +49,7 @@ const CourseDetailsView = ({ course }: CourseDetailsViewProps) => {
             </div>
 
             <div className="shrink-0 self-start">
-              <CourseShareButton />
+              <CourseShareButton title={course.title} />
             </div>
           </div>
 
@@ -61,7 +62,9 @@ const CourseDetailsView = ({ course }: CourseDetailsViewProps) => {
                     alt={`${course.title} preview`}
                     fill
                     priority
-                    className="object-cover object-center"
+                    className={`object-cover object-center transition ${
+                      isPlaying ? 'scale-105 brightness-90' : ''
+                    }`}
                     sizes="(max-width:1024px) 100vw, 720px"
                   />
                   <div
@@ -71,15 +74,25 @@ const CourseDetailsView = ({ course }: CourseDetailsViewProps) => {
                   <button
                     type="button"
                     className="absolute inset-0 flex items-center justify-center"
-                    aria-label="Play course preview"
+                    aria-label={
+                      isPlaying ? 'Pause course preview' : 'Play course preview'
+                    }
+                    aria-pressed={isPlaying}
+                    onClick={() => setIsPlaying((value) => !value)}
                   >
-                    <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand shadow-float transition hover:scale-105 sm:h-[78px] sm:w-[78px]">
-                      <Play
-                        size={30}
-                        className="ml-1 fill-brand"
-                        aria-hidden
-                      />
-                    </span>
+                    {isPlaying ? (
+                      <span className="rounded-full bg-black/55 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-sm">
+                        Preview playing — click to pause
+                      </span>
+                    ) : (
+                      <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand shadow-float transition hover:scale-105 sm:h-[78px] sm:w-[78px]">
+                        <Play
+                          size={30}
+                          className="ml-1 fill-brand"
+                          aria-hidden
+                        />
+                      </span>
+                    )}
                   </button>
                 </div>
               </div>

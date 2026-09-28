@@ -1,19 +1,33 @@
 'use client';
 
 import Logo from '@/shared/components/Logo/Logo';
-import { navLinks } from '@/features/home/data';
+import { getAuthUser, type AuthUser } from '@/shared/lib/auth';
+import { navLinks } from '@/shared/constants/navigation';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type HeaderProps = {
-  isLoggedIn?: boolean;
   variant?: 'hero' | 'solid';
 };
 
-const Header = ({ isLoggedIn = false, variant = 'hero' }: HeaderProps) => {
+const Header = ({ variant = 'hero' }: HeaderProps) => {
   const [open, setOpen] = useState(false);
+  const [bagOpen, setBagOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const isHero = variant === 'hero';
+  const isLoggedIn = Boolean(user);
+
+  useEffect(() => {
+    const sync = () => setUser(getAuthUser());
+    sync();
+    window.addEventListener('bytespace-auth-change', sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener('bytespace-auth-change', sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
 
   return (
     <header
@@ -54,13 +68,32 @@ const Header = ({ isLoggedIn = false, variant = 'hero' }: HeaderProps) => {
               Join Us
             </Link>
           )}
-          <button
-            type="button"
-            className="rounded-full p-2 text-white hover:bg-white/10"
-            aria-label="Shopping bag"
-          >
-            <ShoppingBag size={20} />
-          </button>
+          <div className="relative">
+            <button
+              type="button"
+              className="rounded-full p-2 text-white hover:bg-white/10"
+              aria-label="Shopping bag"
+              aria-expanded={bagOpen}
+              onClick={() => setBagOpen((value) => !value)}
+            >
+              <ShoppingBag size={20} />
+            </button>
+            {bagOpen && (
+              <div className="absolute right-0 z-40 mt-2 w-64 rounded-2xl border border-surface-line bg-white p-4 text-ink shadow-float">
+                <p className="text-sm font-medium">Your bag is empty</p>
+                <p className="mt-1 text-xs text-ink-faint">
+                  Browse courses and enroll to start learning.
+                </p>
+                <Link
+                  href="/search"
+                  className="mt-3 inline-flex text-sm font-medium text-brand hover:underline"
+                  onClick={() => setBagOpen(false)}
+                >
+                  Browse courses
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         <button
@@ -103,6 +136,13 @@ const Header = ({ isLoggedIn = false, variant = 'hero' }: HeaderProps) => {
                 Join Us
               </Link>
             )}
+            <Link
+              href="/search"
+              className="rounded-lg px-3 py-2 text-white hover:bg-white/10"
+              onClick={() => setOpen(false)}
+            >
+              Shopping bag
+            </Link>
           </nav>
         </div>
       )}

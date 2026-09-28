@@ -1,4 +1,4 @@
-import { partnerLogos } from '@/features/home/data';
+import { partnerLogos } from '@/data/home/home.data';
 
 const PartnersSection = () => {
   return (

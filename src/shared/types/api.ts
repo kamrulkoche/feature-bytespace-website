@@ -1,3 +1,5 @@
+export type TriBoolean = boolean | 'pending';
+
 export interface WithPagination<T> {
   rows: T[];
   count: number;
@@ -22,5 +24,3 @@ export interface ErrorResponseInterface {
 export type ResponseInterface<T> =
   | SuccessResponseIn<T>
   | ErrorResponseInterface;
-
-export default ResponseInterface;

@@ -2,17 +2,37 @@
 
 import { searchTypeOptions } from '@/features/search/data';
 import { ChevronDown, Search } from 'lucide-react';
-import { FormEvent, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FormEvent, useEffect, useState } from 'react';
 
 const SearchHero = () => {
-  const [query, setQuery] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') ?? '');
   const [searchType, setSearchType] = useState<(typeof searchTypeOptions)[number]>(
-    'Courses'
+    () => {
+      const type = searchParams.get('type');
+      return searchTypeOptions.includes(type as (typeof searchTypeOptions)[number])
+        ? (type as (typeof searchTypeOptions)[number])
+        : 'Courses';
+    }
   );
   const [typeOpen, setTypeOpen] = useState(false);
 
+  useEffect(() => {
+    setQuery(searchParams.get('q') ?? '');
+  }, [searchParams]);
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const params = new URLSearchParams();
+    const trimmed = query.trim();
+    if (trimmed) params.set('q', trimmed);
+    if (searchType !== 'Courses') params.set('type', searchType);
+    const category = searchParams.get('category');
+    if (category) params.set('category', category);
+    const qs = params.toString();
+    router.push(qs ? `/search?${qs}` : '/search');
   };
 
   return (
