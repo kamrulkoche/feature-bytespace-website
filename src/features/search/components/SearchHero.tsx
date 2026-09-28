@@ -42,20 +42,22 @@ const SearchHero = () => {
         aria-hidden
       />
 
-      <div className="container-content relative z-10 flex min-h-[240px] flex-col items-center justify-center pb-12 pt-2 lg:min-h-[240px] lg:pb-14 lg:pt-0">
-        <h1 className="text-center font-display text-3xl font-semibold text-surface-muted sm:text-4xl">
+      <div className="container-content relative z-10 flex flex-col items-center justify-center pb-8 pt-6 sm:pb-12 sm:pt-8 lg:min-h-[240px] lg:pb-14 lg:pt-0">
+        <h1 className="text-center font-display text-[26px] font-semibold leading-tight text-surface-muted sm:text-3xl md:text-4xl">
           Find Your Next Course
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="mt-8 flex w-full max-w-[624px] flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+          className="mt-6 flex w-full max-w-[624px] flex-col gap-3 sm:mt-8 sm:flex-row sm:items-stretch sm:gap-4"
         >
           <label className="sr-only" htmlFor="search-query">
             Search courses
           </label>
-          <div className="flex h-[52px] flex-1 items-center gap-2 rounded-full bg-white px-6 text-ink-faint">
-            <Search size={20} aria-hidden />
+
+          {/* Same height as Courses on all breakpoints */}
+          <div className="flex h-14 min-h-14 w-full min-w-0 flex-1 items-center gap-3 rounded-full bg-white px-5 text-ink-faint sm:h-[52px] sm:min-h-[52px] sm:px-6">
+            <Search size={22} className="shrink-0" aria-hidden />
             <input
               id="search-query"
               name="q"
@@ -63,14 +65,14 @@ const SearchHero = () => {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search"
-              className="h-full w-full bg-transparent text-lg text-ink outline-none placeholder:text-ink-faint"
+              className="h-full w-full min-w-0 bg-transparent text-base text-ink outline-none placeholder:text-ink-faint sm:text-lg"
             />
           </div>
 
-          <div className="relative shrink-0">
+          <div className="relative w-full shrink-0 sm:w-auto">
             <button
               type="button"
-              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-lg font-medium text-ink transition hover:bg-accent-dark sm:w-auto"
+              className="inline-flex h-14 min-h-14 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-base font-medium text-ink transition hover:bg-accent-dark sm:h-[52px] sm:min-h-[52px] sm:w-auto sm:text-lg"
               aria-haspopup="listbox"
               aria-expanded={typeOpen}
               onClick={() => setTypeOpen((open) => !open)}
@@ -82,7 +84,7 @@ const SearchHero = () => {
             {typeOpen && (
               <ul
                 role="listbox"
-                className="absolute right-0 z-20 mt-2 min-w-full overflow-hidden rounded-2xl border border-surface-line bg-white py-1 shadow-float"
+                className="absolute left-0 right-0 z-30 mt-2 overflow-hidden rounded-2xl border border-surface-line bg-white py-1 shadow-float sm:left-auto sm:right-0 sm:min-w-[160px]"
               >
                 {searchTypeOptions.map((option) => (
                   <li key={option}>
@@ -90,7 +92,7 @@ const SearchHero = () => {
                       type="button"
                       role="option"
                       aria-selected={option === searchType}
-                      className={`block w-full px-4 py-2.5 text-left text-sm transition hover:bg-surface-muted ${
+                      className={`block w-full px-4 py-3 text-left text-sm transition hover:bg-surface-muted ${
                         option === searchType
                           ? 'font-medium text-brand'
                           : 'text-ink'

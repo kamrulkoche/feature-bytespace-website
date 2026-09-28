@@ -27,7 +27,7 @@ const SearchCategoryTabs = ({
               role="tab"
               aria-selected={isActive}
               onClick={() => onChange(tag)}
-              className={`whitespace-nowrap rounded-full px-4 py-3 text-base font-medium transition ${
+              className={`whitespace-nowrap rounded-full px-3.5 py-2.5 text-sm font-medium transition sm:px-4 sm:py-3 sm:text-base ${
                 isActive
                   ? 'bg-accent text-ink'
                   : 'bg-surface-muted text-ink-muted hover:bg-surface-line'

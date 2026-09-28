@@ -124,8 +124,8 @@ const SearchResults = () => {
   }, [query, category]);
 
   return (
-    <section className="bg-white pb-16 pt-10 sm:pb-20 sm:pt-12">
-      <div className="container-content space-y-8 sm:space-y-10">
+    <section className="bg-white pb-12 pt-6 sm:pb-20 sm:pt-12">
+      <div className="container-content space-y-5 sm:space-y-8 lg:space-y-10">
         <SearchFilters
           sortBy={sortBy}
           level={level}
